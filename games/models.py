@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Avg
+
 
 class Genre(models.Model):
     name = models.CharField(max_length=100)
@@ -15,3 +17,7 @@ class Game(models.Model):
 
     def __str__(self):
         return self.name
+
+    def average_rating(self):
+        avg = self.reviews.aggregate(avg=Avg('rating'))['avg']
+        return round(avg, 1) if avg else None

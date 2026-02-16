@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Space</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="nav">
+            <section class="logo">
+                <a href="/"><img src="../../static/images/logo.png" alt=""></a>
+            </section>
+            <section class="menu">
+                <span><a href="/games/" >Games</a></span>
+                <span><a href="/genres/" >Genres</a></span>
+                <span><a href="/reviews/" >Reviews</a></span>
+            </section>
+      </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+<footer>
+    <p>Game Space 2026 - Django App | All Rights Reserved ©</p>
+</footer>
+</html>
