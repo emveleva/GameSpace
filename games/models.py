@@ -14,6 +14,7 @@ class Game(models.Model):
     platform = models.CharField(max_length=100)
     description = models.TextField()
     genres = models.ManyToManyField(Genre)
+    image_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return self.name
