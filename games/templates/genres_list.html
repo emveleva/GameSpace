@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+   <h1>{{ page_title }}</h1>
+        <ul>
+            {% for genre in genres %}
+                <li><a href="">{{ genre.name }}</a></li>
+            {% empty %}
+                <li>No genres available.</li>
+            {% endfor %}
+        </ul>
+
+{% endblock %}
