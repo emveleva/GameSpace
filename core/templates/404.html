@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="not-found">
+    <img src="{% static 'images/not-found.png' %}" alt="Not Found" />
+    <h1>The page you are trying to reach has not been found!</h1>
+</div>
+{% endblock %}

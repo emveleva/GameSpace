@@ -1,9 +1,8 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    {% load static %}
     <title>Game Space</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
@@ -11,7 +10,7 @@
     <header class="nav">
         <nav>
             <section class="logo">
-                <a href="/"><img src="../../static/images/logo.png" alt=""></a>
+                <a href="/"><img src="{% static 'images/logo.png' %}" alt=""></a>
             </section>
             <section class="menu">
                 <span><a href="/">Home</a></span>
