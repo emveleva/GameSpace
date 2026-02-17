@@ -1,8 +1,10 @@
 {% extends "base.html" %}
-
-{% block title %}Welcome{% endblock %}
+{% load static %}
 
 {% block content %}
-<h1>Welcome to GameSpace!</h1>
-<p>Enjoy looking for your next favorite game.</p>
+<div class="image-text-wrapper">
+    <h1>Welcome to Game Space!</h1>
+    <img class="welcome" src="{% static 'images/welcome.png' %}" alt="welcome" />
+    <p>Enjoy looking for your next favorite game.</p>
+</div>
 {% endblock %}

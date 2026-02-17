@@ -2,7 +2,7 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 main {
-  min-height: 86.1%;
+  min-height: 80.8%;
   background-color: #e6d6ff;
   margin: 0 auto;
   display: flex;
@@ -57,14 +57,19 @@ footer p {
       margin: 0;
 }
 
-.not-found {
+.image-text-wrapper {
+    width: 80%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.not-found > img {
+.image-text-wrapper .welcome {
     width: 25%;
+}
+
+.image-text-wrapper .not-found {
+    width: 40%;
 }
 
