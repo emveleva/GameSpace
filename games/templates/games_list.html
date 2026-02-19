@@ -10,7 +10,7 @@
                         <img src="{{ game.image_url|default:'/static/images/empty-page.png' }}" alt="{{ game.name }}">
                         <h2 class="name">{{game.name}}</h2>
                         <a href="{% url 'game_details' game.id %}">
-                            <button class="button-purple">View Game</button>
+                            <button type="button" class="btn btn-info">View Game</button>
                         </a>
                     </div>
                 </div>

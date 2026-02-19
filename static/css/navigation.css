@@ -1,0 +1,31 @@
+a {
+      color: white;
+      text-decoration: none;
+    }
+
+.nav {
+      display: flex;
+      justify-content: center;
+      background-color: #002d69;
+}
+
+nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 92%;
+}
+
+.nav img {
+      width: 200px;
+}
+
+nav section {
+      display: flex;
+      gap: 40px;
+}
+
+span {
+      padding-top:3px;
+      font-size: 14px;
+}
