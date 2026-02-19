@@ -1,9 +1,10 @@
+from django.http import HttpRequest
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Avg
+from django.db.models import Avg, SlugField
 from games.models import Game, Genre
 
 
-def games_list(request):
+def games_list(request: HttpRequest):
     list_games = Game.objects.annotate(
         avg_rating=Avg('reviews__rating')
     ).order_by('name')
@@ -15,7 +16,7 @@ def games_list(request):
 
     return render(request, 'games_list.html', context)
 
-def game_details(request, game_id):
+def game_details(request: HttpRequest, game_id: str):
     game = get_object_or_404(Game, id=game_id)
 
     avg_rating = game.reviews.aggregate(Avg('rating'))['rating__avg']
@@ -26,7 +27,7 @@ def game_details(request, game_id):
     }
     return render(request, 'game_details.html', context)
 
-def genres_list(request):
+def genres_list(request: HttpRequest):
     list_genres = Genre.objects.all().order_by('name')
 
     context = {
@@ -35,3 +36,13 @@ def genres_list(request):
     }
 
     return render(request, 'genres_list.html', context)
+
+def games_by_genre(request: HttpRequest, slug: str):
+    genre = get_object_or_404(Genre, slug=slug)
+    games = Game.objects.filter(genres=genre)
+    context = {
+        'games': games,
+        'page_title': genre.name,
+    }
+
+    return render(request, 'games_list.html', context)

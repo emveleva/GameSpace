@@ -2,14 +2,14 @@
 {% load static %}
 
 {% block content %}
-    <div class="games-list">
-        <h1 class="title">All Games</h1>
+    <h1>{{ page_title }}</h1>
+        <div class="games-list">
             {% for game in games %}
                 <div class="games">
                     <div class="game-container">
                         <img src="{{ game.image_url|default:'/static/images/empty-page.png' }}" alt="{{ game.name }}">
                         <h2 class="name">{{game.name}}</h2>
-                        <a href="{% url 'templates/game_details' game.id %}">
+                        <a href="{% url 'game_details' game.id %}">
                             <button class="button-purple">View Game</button>
                         </a>
                     </div>

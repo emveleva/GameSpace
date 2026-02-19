@@ -23,4 +23,5 @@ urlpatterns = [
     path('', include('core.urls')),
     path('games/', include('games.urls')),
     path('genres/', game_views.genres_list, name='genres_list'),
+    path('genres/<slug:slug>/', game_views.games_by_genre, name='games_by_genre'),
 ]
