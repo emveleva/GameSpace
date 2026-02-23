@@ -20,8 +20,10 @@ from games import views as game_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('core.urls')),
+    path('', include('common.urls')),
     path('games/', include('games.urls')),
     path('genres/', game_views.genres_list, name='genres_list'),
     path('genres/<slug:slug>/', game_views.games_by_genre, name='games_by_genre'),
+    path('platforms/<slug:slug>/', game_views.games_by_platform, name='games_by_platform'),
+
 ]

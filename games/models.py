@@ -9,10 +9,23 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
 
-class Game(models.Model):
+class Platform(models.Model):
     name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.name
+
+class Game(models.Model):
+    name = models.CharField(
+        max_length=100,
+        error_messages={
+            'blank': 'Game name is required',
+            'max_length': 'Game name must be less than 100 characters',
+        }
+    )
     release_date = models.DateField()
-    platform = models.CharField(max_length=100)
+    platforms = models.ManyToManyField(Platform)
     description = models.TextField()
     genres = models.ManyToManyField(Genre)
     image_url = models.URLField(blank=True, null=True)

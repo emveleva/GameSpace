@@ -3,6 +3,9 @@
 
 {% block content %}
     <h1>{{ page_title }}</h1>
+        <a href="{% url 'add_game' %}" class="btn btn-primary">
+            Add Game
+        </a>
         <div class="games-list">
             {% for game in games %}
                 <div class="games">
