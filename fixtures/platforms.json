@@ -1,58 +1,58 @@
 [
 {
-  "model": "games.platform",
-  "pk": 1,
-  "fields": {
-    "name": "PlayStation",
-    "slug": "ps"
-  }
+    "model": "games.platform",
+    "pk": 1,
+    "fields": {
+        "name": "PlayStation",
+        "slug": "ps"
+    }
 },
 {
-  "model": "games.platform",
-  "pk": 3,
-  "fields": {
-    "name": "Mac",
-    "slug": "mac"
-  }
+    "model": "games.platform",
+    "pk": 3,
+    "fields": {
+        "name": "Mac",
+        "slug": "mac"
+    }
 },
 {
-  "model": "games.platform",
-  "pk": 4,
-  "fields": {
-    "name": "XBOX",
-    "slug": "xbox"
-  }
+    "model": "games.platform",
+    "pk": 4,
+    "fields": {
+        "name": "XBOX",
+        "slug": "xbox"
+    }
 },
 {
-  "model": "games.platform",
-  "pk": 5,
-  "fields": {
-    "name": "Windows",
-    "slug": "windows"
-  }
+    "model": "games.platform",
+    "pk": 5,
+    "fields": {
+        "name": "Windows",
+        "slug": "windows"
+    }
 },
 {
-  "model": "games.platform",
-  "pk": 6,
-  "fields": {
-    "name": "Nintendo Switch",
-    "slug": "nintendo"
-  }
+    "model": "games.platform",
+    "pk": 6,
+    "fields": {
+        "name": "Nintendo Switch",
+        "slug": "nintendo"
+    }
 },
 {
-  "model": "games.platform",
-  "pk": 7,
-  "fields": {
-    "name": "Android",
-    "slug": "android"
-  }
+    "model": "games.platform",
+    "pk": 7,
+    "fields": {
+        "name": "Android",
+        "slug": "android"
+    }
 },
 {
-  "model": "games.platform",
-  "pk": 8,
-  "fields": {
-    "name": "iOS",
-    "slug": "ios"
-  }
+    "model": "games.platform",
+    "pk": 8,
+    "fields": {
+        "name": "iOS",
+        "slug": "ios"
+    }
 }
 ]
