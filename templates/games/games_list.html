@@ -3,9 +3,19 @@
 
 {% block content %}
     <h1>{{ page_title }}</h1>
-        <a href="{% url 'add_game' %}" class="btn btn-primary">
-            Add Game
-        </a>
+        <div class="top-container">
+            <a href="{% url 'add_game' %}" class="btn btn-primary">
+                Add Game
+            </a>
+            <form method="get" class="search-form">
+                <div class="search-group">
+                    {{ search_form.query }}
+                    <button type="submit" class="btn btn-info">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
         <div class="games-list">
             {% for game in games %}
                 <div class="games">

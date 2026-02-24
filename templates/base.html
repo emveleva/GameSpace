@@ -6,30 +6,44 @@
     <meta charset="UTF-8">
     <title>Game Space</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
     <header class="nav">
-        <nav>
-            <section class="logo">
-                <a href="/"><img src="{% static 'images/logo.png' %}" alt=""></a>
-            </section>
-            <section class="menu">
-                <span><a href="/">Home</a></span>
-                <span><a href="/games" >Games</a></span>
-                <span><a href="/genres/" >Genres</a></span>
-                <span><a href="/reviews" >Reviews</a></span>
-            </section>
-      </nav>
+         {% include 'partials/navigation.html' %}
     </header>
 
     <main>
         {% block content %}{% endblock %}
     </main>
 
+    {% include 'partials/footer.html' %}
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            if (document.getElementById("id_genres")) {
+                new TomSelect("#id_genres", {
+                    plugins: ["remove_button"],
+                    persist: false,
+                    create: false,
+                    controlInput: null,
+                });
+            }
+
+            if (document.getElementById("id_platforms")) {
+                new TomSelect("#id_platforms", {
+                    plugins: ["remove_button"],
+                    persist: false,
+                    create: false,
+                    controlInput: null,
+                });
+            }
+
+        });
+        </script>
 </body>
-<footer>
-    <p>Game Space 2026 - Django App | All Rights Reserved ©</p>
-</footer>
 </html>

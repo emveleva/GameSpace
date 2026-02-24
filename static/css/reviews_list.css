@@ -1,0 +1,38 @@
+.reviews-section {
+    margin-top: 20px;
+}
+
+.reviews-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.review-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.review-rating {
+    font-weight: bold;
+    color: #ff9800;
+}
+
+.review-text {
+    margin-bottom: 10px;
+}
+
+.review-actions {
+    display: flex;
+    gap: 8px;
+}

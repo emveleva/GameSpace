@@ -1,0 +1,38 @@
+{% block content %}
+
+<div class="reviews-section">
+    <h2>Reviews</h2>
+    <div class="reviews-container">
+        {% for review in game.reviews.all %}
+            <div class="review-card">
+
+                <div class="review-header">
+                    <strong>{{ review.author }}</strong>
+                    <span class="review-rating">
+                        ⭐ {{ review.rating }}/5
+                    </span>
+                </div>
+
+                <p class="review-text">
+                    {{ review.review }}
+                </p>
+
+                <div class="review-actions">
+                    <a href="{% url 'edit_review' review.id %}" class="btn btn-sm btn-warning">
+                        Edit
+                    </a>
+
+                    <a href="{% url 'delete_review' review.id %}" class="btn btn-sm btn-danger">
+                        Delete
+                    </a>
+                </div>
+            </div>
+
+        {% empty %}
+            <p>No reviews yet.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

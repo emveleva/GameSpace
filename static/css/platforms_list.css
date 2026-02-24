@@ -1,0 +1,37 @@
+.platforms-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    width: 90%;
+    padding: 20px 0;
+}
+
+.platform-card {
+    width: 180px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #002d69;
+    transition: transform 0.2s ease;
+}
+
+.platform-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.platform-image img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
+.platform-name {
+    text-align: center;
+}

@@ -8,25 +8,45 @@
 
             <div class="game-details-layout">
                 <div class="game-info">
-                    <p>Platform:
-                        {% for platform in game.platforms.all %}
-                            {{ platform.name }}
-                        {% endfor %}
-                    </p>
-                    <p>Release date: {{ game.release_date }}</p>
-                    <p>{{ game.description }}</p>
-                    <p>
-                        Genres:
-                        {% for genre in game.genres.all %}
-                            <a href="{% url 'games_by_genre' genre.slug %}">{{ genre.name }}</a>{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </p>
+                    <div class="info-row">
+                        <span class="info-label">Release Date:</span>
+                        <span class="info-value">{{ game.release_date }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Platform:</span>
+                        <span class="info-value">
+                            {% for platform in game.platforms.all %}
+                                <a href="{% url 'games_by_platform' platform.slug %}">
+                                    {{ platform.name }}
+                                </a>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Description:</span>
+                        <span class="info-value">{{ game.description }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Genres:</span>
+                        <span class="info-value">
+                            {% for genre in game.genres.all %}
+                                <a href="{% url 'games_by_genre' genre.slug %}">
+                                    {{ genre.name }}
+                                </a>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </span>
+                    </div>
 
-                    {% if avg_rating %}
-                        <p>Average Rating: {{ avg_rating|floatformat:1 }} / 5</p>
-                    {% else %}
-                        <p>No reviews yet.</p>
-                    {% endif %}
+                    <div class="info-row rating-row">
+                        <span class="info-label">Average Rating:</span>
+                        <span class="info-value">
+                            {% if avg_rating %}
+                                ⭐ {{ avg_rating|floatformat:1 }} / 5
+                            {% else %}
+                                No reviews yet
+                            {% endif %}
+                        </span>
+                    </div>
                 </div>
 
                 <div class="game-image">
@@ -36,14 +56,23 @@
                         <img src="{% static 'images/empty-page.png' %}" alt="placeholder">
                     {% endif %}
                 </div>
+            </div>
+
+            <div class="game-actions">
+                <a href="{% url 'add_review' game.id %}" class="btn btn-info">
+                    Add Review
+                </a>
 
                 <a href="{% url 'edit_game' game.id %}" class="btn btn-primary">
                     Edit Game
                 </a>
+
                 <a href="{% url 'delete_game' game.id %}" class="btn btn-danger">
                     Delete Game
                 </a>
             </div>
+
+            {% include 'reviews/reviews_list.html' %}
         </div>
     {% endif %}
 {% endblock %}

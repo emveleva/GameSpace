@@ -5,11 +5,11 @@
     <div class="form-card">
         <h1 class="form-title">
             {% if action == "edit" %}
-                Edit Game
+                Edit Review
             {% elif action == "delete" %}
-                Delete Game
+                Delete Review
             {% else %}
-                Add Game
+                Add Review
             {% endif %}
         </h1>
 
@@ -20,6 +20,7 @@
                 <div class="form-field">
                     {{ field.label_tag }}
                     {{ field }}
+
                     {% if field.errors %}
                         <div class="field-errors">
                             {{ field.errors }}
@@ -42,13 +43,14 @@
 
                 {% else %}
                     <button type="submit" class="btn btn-success">
-                        Add Game
+                        Add Review
                     </button>
                 {% endif %}
 
                 <a href="{{ cancel_url }}" class="btn btn-secondary">
                     Cancel
                 </a>
+
             </div>
         </form>
     </div>

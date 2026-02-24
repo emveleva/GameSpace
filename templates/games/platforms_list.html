@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="platforms-list">
+    {% for platform in platforms %}
+        <div class="platform-card">
+            <a href="{% url 'games_by_platform' platform.slug %}">
+                <div class="platform-image">
+                    <img
+                        src="{% static 'images/platforms/' %}{{ platform.slug }}.png"
+                        alt="{{ platform.name }}"
+                    >
+                </div>
+
+                <div class="platform-name">
+                    {{ platform.name }}
+                </div>
+            </a>
+        </div>
+    {% empty %}
+        <p>No platforms available.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

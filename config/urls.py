@@ -22,8 +22,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('common.urls')),
     path('games/', include('games.urls')),
+    path('reviews/', include('reviews.urls')),
     path('genres/', game_views.genres_list, name='genres_list'),
     path('genres/<slug:slug>/', game_views.games_by_genre, name='games_by_genre'),
+    path('platforms/', game_views.platforms_list, name='platforms_list'),
     path('platforms/<slug:slug>/', game_views.games_by_platform, name='games_by_platform'),
 
 ]

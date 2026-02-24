@@ -2,13 +2,30 @@
 {% load static %}
 
 {% block content %}
-   <h1>{{ page_title }}</h1>
-        <ul>
-            {% for genre in genres %}
-                <li><a href="{% url 'games_by_genre' genre.slug %}">{{ genre.name }}</a></li>
-            {% empty %}
-                <li>No genres available.</li>
-            {% endfor %}
-        </ul>
+
+<h1>{{ page_title }}</h1>
+
+<div class="genres-grid">
+
+    {% for letter, genres in grouped_genres.items %}
+        <div class="genre-group">
+            <h2 class="letter-title">{{ letter }}</h2>
+
+            <hr>
+
+            <div class="genre-list">
+                {% for genre in genres %}
+                    <a href="{% url 'games_by_genre' genre.slug %}">
+                        {{ genre.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+    {% empty %}
+        <p>No genres available.</p>
+    {% endfor %}
+
+</div>
 
 {% endblock %}
