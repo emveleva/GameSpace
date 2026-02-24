@@ -23,7 +23,7 @@ Users can:
 
 ## Features
 
-### 🕹 Games Management
+### Games Management
 
 Users can:
 
@@ -63,3 +63,98 @@ Users can:
 - Modal confirmation for review deletion  
 
 ---
+
+## Project Setup
+
+### Clone the Repository
+
+`git clone <repository-url>`  
+`cd GameSpace`  
+
+---
+
+### Create a Virtual Environment
+
+`python -m venv venv`  
+
+Activate it:
+
+**Windows:**  
+`venv\Scripts\activate`  
+
+**Mac / Linux:**  
+`source venv/bin/activate`  
+
+---
+
+### Install Dependencies
+
+`pip install -r requirements.txt`  
+
+---
+
+### Create a `.env` File
+
+Create a `.env` file in the project root (same level as `manage.py`) and add:
+DB_NAME=your_database_name
+DB_USER=your_database_user
+DB_PASSWORD=your_database_password
+DB_HOST=localhost
+DB_PORT=5432
+
+❗ Do NOT commit this file to version control.
+
+---
+
+### Run Database Migrations
+
+`python manage.py migrate`  
+
+---
+
+### Load Default Genres and Platforms (Optional but Recommended)
+
+If you exported your data as fixtures:
+
+`python manage.py loaddata genres.json`  
+`python manage.py loaddata platforms.json`  
+
+Place these JSON files in the project root.
+
+---
+
+### Create a Superuser (Optional)
+
+`python manage.py createsuperuser`  
+
+Only required if using the Django admin panel.
+
+---
+
+### Collect Static Files (Required for Production)
+
+`python manage.py collectstatic`  
+
+---
+
+### Run the Server
+
+`python manage.py runserver`  
+
+Open in browser:
+
+`http://127.0.0.1:8000/`  
+
+---
+
+## Environment Variables
+
+Sensitive information such as database credentials is stored inside the `.env` file to ensure security and production readiness.
+
+---
+
+## Future Improvements
+
+- Add user authentication and permissions  
+- Add pagination for games and reviews  
+- Add REST API support  
