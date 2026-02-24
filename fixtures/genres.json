@@ -1,0 +1,346 @@
+[
+{
+  "model": "games.genre",
+  "pk": 1,
+  "fields": {
+    "name": "RPG",
+    "slug": "rpg"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 2,
+  "fields": {
+    "name": "MOBA",
+    "slug": "moba"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 3,
+  "fields": {
+    "name": "Action",
+    "slug": "action"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 4,
+  "fields": {
+    "name": "Action-Adventure",
+    "slug": "action-adventure"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 5,
+  "fields": {
+    "name": "Platformer",
+    "slug": "platformer"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 6,
+  "fields": {
+    "name": "Shooter",
+    "slug": "shooter"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 7,
+  "fields": {
+    "name": "Fighting",
+    "slug": "fighting"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 8,
+  "fields": {
+    "name": "Stealth",
+    "slug": "stealth"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 9,
+  "fields": {
+    "name": "Hack and Slash",
+    "slug": "hackandslash"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 10,
+  "fields": {
+    "name": "Action RPG",
+    "slug": "actionrpg"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 11,
+  "fields": {
+    "name": "Turn-Based RPG",
+    "slug": "turnbasedrpg"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 12,
+  "fields": {
+    "name": "MMORPG",
+    "slug": "mmorpg"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 13,
+  "fields": {
+    "name": "Roguelike / Roduelite",
+    "slug": "roguelike"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 14,
+  "fields": {
+    "name": "Tactical RPG",
+    "slug": "tacticalrpg"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 15,
+  "fields": {
+    "name": "Dungeon Crawler",
+    "slug": "dungeoncrawler"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 16,
+  "fields": {
+    "name": "Soulslike",
+    "slug": "soulslike"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 17,
+  "fields": {
+    "name": "Strategy",
+    "slug": "strategy"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 18,
+  "fields": {
+    "name": "Real-Time Strategy (RTS)",
+    "slug": "rts"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 19,
+  "fields": {
+    "name": "Turn-Based Strategy",
+    "slug": "turnbasedstrategy"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 20,
+  "fields": {
+    "name": "4X",
+    "slug": "4x"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 21,
+  "fields": {
+    "name": "Tower Defence",
+    "slug": "towerdefence"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 22,
+  "fields": {
+    "name": "Auto Battler",
+    "slug": "autobattler"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 23,
+  "fields": {
+    "name": "Simulation",
+    "slug": "sim"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 24,
+  "fields": {
+    "name": "City Builder",
+    "slug": "citybuilder"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 25,
+  "fields": {
+    "name": "Life Simulation",
+    "slug": "lifesim"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 26,
+  "fields": {
+    "name": "Business / Tycoon",
+    "slug": "tycoon"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 27,
+  "fields": {
+    "name": "Farming",
+    "slug": "farming"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 28,
+  "fields": {
+    "name": "Vehicle Simulation",
+    "slug": "vehiclesim"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 29,
+  "fields": {
+    "name": "Puzzle",
+    "slug": "puzzle"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 30,
+  "fields": {
+    "name": "Escape Room",
+    "slug": "escaperoom"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 31,
+  "fields": {
+    "name": "Hidden Object",
+    "slug": "hiddenobj"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 32,
+  "fields": {
+    "name": "Sports",
+    "slug": "sports"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 33,
+  "fields": {
+    "name": "Racing",
+    "slug": "racing"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 34,
+  "fields": {
+    "name": "Survival Horror",
+    "slug": "survivalhorror"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 35,
+  "fields": {
+    "name": "Action Horror",
+    "slug": "actiongorror"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 36,
+  "fields": {
+    "name": "Battle Royale",
+    "slug": "battleroyale"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 37,
+  "fields": {
+    "name": "PvP",
+    "slug": "pvp"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 38,
+  "fields": {
+    "name": "Co-op",
+    "slug": "coop"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 39,
+  "fields": {
+    "name": "Open World",
+    "slug": "openworld"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 40,
+  "fields": {
+    "name": "Sandbox",
+    "slug": "sandbox"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 41,
+  "fields": {
+    "name": "Casual",
+    "slug": "casual"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 42,
+  "fields": {
+    "name": "Idle",
+    "slug": "idle"
+  }
+},
+{
+  "model": "games.genre",
+  "pk": 43,
+  "fields": {
+    "name": "Indie",
+    "slug": "indie"
+  }
+}
+]
