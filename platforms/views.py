@@ -16,20 +16,12 @@ def platforms_list(request: HttpRequest):
 
     return render(request, 'platforms/platforms_list.html', context)
 
-def platform_details(request: HttpRequest, slug: str):
-    platform = get_object_or_404(Platform, slug=slug)
-
-    context = {
-        'platform': platform,
-    }
-    return render(request, 'platforms/platform_details.html', context)
-
 def add_platform(request: HttpRequest):
     form = AddPlatformForm(request.POST or None)
 
     if request.method == 'POST' and form.is_valid():
         platform = form.save()
-        return redirect('platform_details', slug=platform.slug)
+        return redirect('platforms_list')
 
     return render(request, 'platforms/platform_form.html', {
         'form': form,

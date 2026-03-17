@@ -8,7 +8,7 @@ from platforms.models import Platform
 class PlatformFormBasic(forms.ModelForm):
     class Meta:
         model = Platform
-        fields = ['name']
+        fields = ['name', 'image_url']
         labels = {
             'name':'Platform Name',
         }

@@ -27,24 +27,12 @@ def genres_list(request: HttpRequest):
 
     return render(request, 'genres/genres_list.html', context)
 
-
-def genre_details(request: HttpRequest, slug: str):
-    genre = get_object_or_404(Genre, slug=slug)
-
-    games = Game.objects.filter(genres=genre).order_by('name')
-
-    context = {
-        'genre': genre,
-        'games': games,
-    }
-    return render(request, 'genres/genre_details.html', context)
-
 def add_genre(request: HttpRequest):
     form = AddGenreForm(request.POST or None)
 
     if request.method == 'POST' and form.is_valid():
         genre = form.save()
-        return redirect('genre_details', slug=genre.slug)
+        return redirect('genres_list')
 
     return render(request, 'genres/genre_form.html', {
         'form': form,
