@@ -5,7 +5,9 @@ Game Space is a web application for managing video games and user reviews.
 Users can:
 
 - Add, edit, and delete games  
-- Add, edit, and delete reviews for games  
+- Add, edit, and delete reviews for games
+- Add, edit, and delete genre
+- Add, edit, and delete platforms
 - Rate games  
 - View game details with platforms and genres  
 - Safely delete games and reviews with confirmation  
