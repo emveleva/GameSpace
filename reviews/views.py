@@ -45,15 +45,13 @@ class EditReviewView(UpdateView):
 class DeleteReviewView(DeleteView):
     model = Review
     template_name = 'reviews/review_form.html'
-    success_url = reverse_lazy('games_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        obj = self.object
-
-        context['form'] = DeleteReviewForm(instance=obj)
+        context['form'] = DeleteReviewForm(instance=self.object)
         context['action'] = 'delete'
-        context['cancel_url'] = obj.game.get_absolute_url()
-
+        context['cancel_url'] = self.object.game.get_absolute_url()
         return context
+
+    def get_success_url(self):
+        return reverse('game_details', kwargs={'game_id': self.object.game.pk})

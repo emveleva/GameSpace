@@ -37,7 +37,7 @@ def edit_platform(request: HttpRequest, slug: str):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return redirect('platforms_list')
+            return redirect(platform.get_absolute_url())
 
     return render(request, 'platforms/platform_form.html', {
         'form': form,

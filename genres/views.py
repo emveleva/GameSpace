@@ -48,7 +48,7 @@ def edit_genre(request: HttpRequest, slug: str):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return redirect('genres_list')
+            return redirect(genre.get_absolute_url())
 
     return render(request, 'genres/genre_form.html', {
         'form': form,

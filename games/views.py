@@ -128,7 +128,7 @@ def edit_game(request: HttpRequest, game_id: str):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return redirect('games_list')
+            return redirect('game_details', game_id=game.id)
 
     return render(request, 'games/game_form.html', {
         'form': form,
@@ -151,5 +151,5 @@ def delete_game(request: HttpRequest, game_id: str):
     return render(request, 'games/game_form.html', {
         'form': form,
         'action': 'delete',
-        'cancel_url': reverse('games_list'),
+        'cancel_url': game.get_absolute_url(),
     })
