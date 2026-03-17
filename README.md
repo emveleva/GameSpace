@@ -57,6 +57,31 @@ Users can:
 
 ---
 
+### Platform System
+
+Users can:
+
+- Add platform
+- Platform include:
+  - Name
+  - Image URL (optional)
+- Edit platforms
+- Delete platforms with a confirmation modal  
+
+---
+
+### Genre System
+
+Users can:
+
+- Add genres
+- Genres include:
+  - Name
+- Edit genres  
+- Delete genres with a confirmation modal  
+
+---
+
 ### Safe Deletion
 
 - Dedicated delete page for games  
@@ -124,6 +149,13 @@ CREATE USER game_user WITH PASSWORD 'your_secure_password';
 Grant the user access to the database:
 
 GRANT ALL PRIVILEGES ON DATABASE game_space TO game_user;
+
+\c game_space
+
+GRANT ALL ON SCHEMA public TO game_user;
+ALTER SCHEMA public OWNER TO game_user;
+
+ALTER DATABASE game_space OWNER TO game_user;
 
 ---
 
