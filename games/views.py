@@ -46,81 +46,62 @@ def game_details(request: HttpRequest, game_id: str):
     }
     return render(request, 'games/game_details.html', context)
 
-def genres_list(request: HttpRequest):
-    genres = Genre.objects.annotate(
-        lower_name=Lower('name')
-    ).order_by('lower_name')
-
-    grouped_genres = defaultdict(list)
-
-    for genre in genres:
-        first_letter = genre.name[0].upper()
-        grouped_genres[first_letter].append(genre)
-
-    context = {
-        'grouped_genres': dict(sorted(grouped_genres.items())),
-        'page_title': 'All Genres',
-    }
-
-    return render(request, 'games/genres_list.html', context)
-
 def games_by_genre(request: HttpRequest, slug: str):
     genre = get_object_or_404(Genre, slug=slug)
     search_form = GameSearchForm(request.GET or None)
 
     games = Game.objects.filter(genres=genre)
 
-    if 'query' in request.GET:
-        if search_form.is_valid():
-            search_value = search_form.cleaned_data['query']
-            games = games.filter(
-                Q(name__icontains=search_value)
-                    |
-                Q(description__icontains=search_value)
-            )
+    if 'query' in request.GET and search_form.is_valid():
+        search_value = search_form.cleaned_data['query']
+        games = games.filter(
+            Q(name__icontains=search_value) |
+            Q(description__icontains=search_value)
+        )
 
     context = {
         'games': games,
-        'page_title': genre.name,
+        'page_title': f"Games in {genre.name}",
         'search_form': search_form,
+        'current_genre': genre,
+        'show_genre_actions': True,
+        'current_platform': None,
+        'show_platform_actions': False,
     }
 
     return render(request, 'games/games_list.html', context)
+
 
 def games_by_platform(request: HttpRequest, slug: str):
     platform = get_object_or_404(Platform, slug=slug)
-    games = Game.objects.filter(platforms=platform)
     search_form = GameSearchForm(request.GET or None)
 
-    if 'query' in request.GET:
-        if search_form.is_valid():
-            search_value = search_form.cleaned_data['query']
-            games = games.filter(
-                Q(name__icontains=search_value)
-                    |
-                Q(description__icontains=search_value)
-            )
+    games = Game.objects.filter(platforms=platform)
+
+    if 'query' in request.GET and search_form.is_valid():
+        search_value = search_form.cleaned_data['query']
+        games = games.filter(
+            Q(name__icontains=search_value) |
+            Q(description__icontains=search_value)
+        )
 
     context = {
         'games': games,
-        'page_title': platform.name,
+        'page_title': f"Games on {platform.name}",
         'search_form': search_form,
+        'current_platform': platform,
+        'show_platform_actions': True,
+        'current_genre': None,
+        'show_genre_actions': False,
     }
 
     return render(request, 'games/games_list.html', context)
 
-def platforms_list(request: HttpRequest):
-    list_platforms = Platform.objects.all().order_by('name')
-
-    context = {
-        'platforms': list_platforms,
-        'page_title': 'All Platforms'
-    }
-
-    return render(request, 'games/platforms_list.html', context)
-
 def add_game(request: HttpRequest):
     form = AddGameForm(request.POST or None)
+
+    genres_count = Genre.objects.count()
+    platforms_count = Platform.objects.count()
 
     if request.method == 'POST' and form.is_valid():
         game = form.save()
@@ -135,6 +116,8 @@ def add_game(request: HttpRequest):
         'form': form,
         'action': 'add',
         'cancel_url': reverse('games_list'),
+        'genres_count': genres_count,
+        'platforms_count': platforms_count,
     })
 
 def edit_game(request: HttpRequest, game_id: str):

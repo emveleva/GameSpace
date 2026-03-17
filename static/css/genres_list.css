@@ -48,3 +48,16 @@
     color: #56ccc8;
     padding-left: 6px;
 }
+
+.empty-page {
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty-page img {
+    max-width: 400px;
+}

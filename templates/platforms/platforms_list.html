@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<h1>{{ page_title }}</h1>
+
+<a href="{% url 'add_platform' %}" class="btn btn-primary">
+    Add Platform
+</a>
+
+<div class="platforms-list">
+    {% for platform in platforms %}
+        <div class="platform-card">
+            <a href="{% url 'games_by_platform' platform.slug %}">
+                <div class="platform-image">
+                    {% if platform.image_url %}
+                        <img src="{{ platform.image_url }}" alt="{{ platform.name }}">
+                    {% else %}
+                        <img src="{% static 'images/empty-page.png' %}" alt="placeholder">
+                    {% endif %}
+                </div>
+
+                <div class="platform-name">
+                    {{ platform.name }}
+                </div>
+            </a>
+        </div>
+    {% empty %}
+        <div class="empty-page">
+              <div><img src="{% static 'images/empty-page.png' %}" alt="open-book"></div>
+              <h2>There are no platforms added yet.</h2>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

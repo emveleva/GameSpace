@@ -3,20 +3,8 @@ from django.db import models
 from django.db.models import Avg
 from django.urls import reverse
 
-
-class Genre(models.Model):
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-
-    def __str__(self):
-        return self.name
-
-class Platform(models.Model):
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-
-    def __str__(self):
-        return self.name
+from genres.models import Genre
+from platforms.models import Platform
 
 class Game(models.Model):
     name = models.CharField(

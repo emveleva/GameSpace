@@ -75,3 +75,9 @@
     content: "Select options...";
     color: #888;
 }
+
+.button-wrapper {
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+}
