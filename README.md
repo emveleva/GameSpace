@@ -125,6 +125,13 @@ Grant the user access to the database:
 
 GRANT ALL PRIVILEGES ON DATABASE game_space TO game_user;
 
+\c game_space
+
+GRANT ALL ON SCHEMA public TO game_user;
+ALTER SCHEMA public OWNER TO game_user;
+
+ALTER DATABASE game_space OWNER TO game_user;
+
 ---
 
 ### 4. Configure Environment Variables
