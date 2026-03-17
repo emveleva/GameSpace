@@ -57,6 +57,31 @@ Users can:
 
 ---
 
+### Platform System
+
+Users can:
+
+- Add platform
+- Platform include:
+  - Name
+  - Image URL (optional)
+- Edit platforms
+- Delete platforms with a confirmation modal  
+
+---
+
+### Genre System
+
+Users can:
+
+- Add genres
+- Genres include:
+  - Name
+- Edit genres  
+- Delete genres with a confirmation modal  
+
+---
+
 ### Safe Deletion
 
 - Dedicated delete page for games  
