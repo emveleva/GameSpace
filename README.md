@@ -145,15 +145,6 @@ python manage.py migrate
 
 ---
 
-### Load Default Genres and Platforms (Optional but Recommended)
-
-If you exported your data as fixtures:
-
-python manage.py loaddata genres.json  
-python manage.py loaddata platforms.json  
-
----
-
 ### Create a Superuser (Optional)
 
 python manage.py createsuperuser  
