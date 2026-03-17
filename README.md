@@ -14,10 +14,10 @@ Users can:
 
 ## Technologies Used
 
-- **Backend:** Django 6  
-- **Database:** PostgreSQL  
-- **Frontend:** HTML, CSS, Bootstrap 5  
-- **Templates:** Django Template Language (DTL)  
+- Backend: Django 6  
+- Database: PostgreSQL  
+- Frontend: HTML, CSS, Bootstrap 5  
+- Templates: Django Template Language (DTL)  
 
 ---
 
@@ -68,39 +68,72 @@ Users can:
 
 ### Clone the Repository
 
-`git clone <repository-url>`  
-`cd GameSpace`  
+git clone <repository-url>  
+cd GameSpace  
 
 ---
 
 ### Create a Virtual Environment
 
-`python -m venv venv`  
+python -m venv venv  
 
 Activate it:
 
-**Windows:**  
-`venv\Scripts\activate`  
+Windows:  
+venv\Scripts\activate  
 
-**Mac / Linux:**  
-`source venv/bin/activate`  
+Mac / Linux:  
+source venv/bin/activate  
 
 ---
 
 ### Install Dependencies
 
-`pip install -r requirements.txt`  
+pip install -r requirements.txt  
 
 ---
 
-### Create a `.env` File
+## 🗄 Database Setup (PostgreSQL Required)
 
-Create a `.env` file in the project root (same level as `manage.py`) and add:
-DB_NAME=your_database_name
-DB_USER=your_database_user
-DB_PASSWORD=your_database_password
-DB_HOST=localhost
-DB_PORT=5432
+This project requires PostgreSQL.
+
+If PostgreSQL is not installed, download and install it first.
+
+---
+
+### 1. Create a Database
+
+Open PostgreSQL terminal or pgAdmin and create the database:
+
+CREATE DATABASE game_space;
+
+---
+
+### 2. Create a Database User
+
+Create a user with a password:
+
+CREATE USER game_user WITH PASSWORD 'your_secure_password';
+
+---
+
+### 3. Grant Permissions
+
+Grant the user access to the database:
+
+GRANT ALL PRIVILEGES ON DATABASE game_space TO game_user;
+
+---
+
+### 4. Configure Environment Variables
+
+Create a .env file in the project root (same level as manage.py) and add:
+
+DB_NAME=game_space  
+DB_USER=game_user  
+DB_PASSWORD=your_secure_password  
+DB_HOST=localhost  
+DB_PORT=5432  
 
 ❗ Do NOT commit this file to version control.
 
@@ -108,7 +141,7 @@ DB_PORT=5432
 
 ### Run Database Migrations
 
-`python manage.py migrate`  
+python manage.py migrate  
 
 ---
 
@@ -116,16 +149,14 @@ DB_PORT=5432
 
 If you exported your data as fixtures:
 
-`python manage.py loaddata genres.json`  
-`python manage.py loaddata platforms.json`  
-
-Place these JSON files in the project root.
+python manage.py loaddata genres.json  
+python manage.py loaddata platforms.json  
 
 ---
 
 ### Create a Superuser (Optional)
 
-`python manage.py createsuperuser`  
+python manage.py createsuperuser  
 
 Only required if using the Django admin panel.
 
@@ -133,23 +164,23 @@ Only required if using the Django admin panel.
 
 ### Collect Static Files (Required for Production)
 
-`python manage.py collectstatic`  
+python manage.py collectstatic  
 
 ---
 
 ### Run the Server
 
-`python manage.py runserver`  
+python manage.py runserver  
 
 Open in browser:
 
-`http://127.0.0.1:8000/`  
+http://127.0.0.1:8000/  
 
 ---
 
 ## Environment Variables
 
-Sensitive information such as database credentials is stored inside the `.env` file to ensure security and production readiness.
+Sensitive information such as database credentials is stored inside the .env file to ensure security and production readiness.
 
 ---
 
