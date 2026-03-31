@@ -6,7 +6,6 @@ from reviews.forms import AddReviewForm, EditReviewForm, DeleteReviewForm
 from reviews.models import Review
 from django.views.generic import CreateView, UpdateView, DeleteView
 
-
 class AddReviewView(CreateView):
     model = Review
     form_class = AddReviewForm

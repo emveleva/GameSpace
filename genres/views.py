@@ -1,75 +1,82 @@
 from collections import defaultdict
 
 from django.db.models.functions import Lower
-from django.http import HttpRequest
-from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
 
-from games.models import Game
 from genres.forms import AddGenreForm, EditGenreForm, DeleteGenreForm
 from genres.models import Genre
 
-def genres_list(request: HttpRequest):
-    genres = Genre.objects.annotate(
-        lower_name=Lower('name')
-    ).order_by('lower_name')
+class GenresListView(TemplateView):
+    template_name = 'genres/genres_list.html'
 
-    grouped_genres = defaultdict(list)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    for genre in genres:
-        first_letter = genre.name[0].upper()
-        grouped_genres[first_letter].append(genre)
+        genres = Genre.objects.annotate(
+            lower_name=Lower('name')
+        ).order_by('lower_name')
 
-    context = {
-        'grouped_genres': dict(sorted(grouped_genres.items())),
-        'page_title': 'All Genres',
-    }
+        grouped_genres = defaultdict(list)
 
-    return render(request, 'genres/genres_list.html', context)
+        for genre in genres:
+            first_letter = genre.name[0].upper()
+            grouped_genres[first_letter].append(genre)
 
-def add_genre(request: HttpRequest):
-    form = AddGenreForm(request.POST or None)
+        context['grouped_genres'] = dict(sorted(grouped_genres.items()))
+        context['page_title'] = 'All Genres'
 
-    if request.method == 'POST' and form.is_valid():
-        genre = form.save()
-        return redirect('genres_list')
+        return context
 
-    return render(request, 'genres/genre_form.html', {
-        'form': form,
-        'action': 'add',
-        'cancel_url': reverse('genres_list'),
-    })
 
-def edit_genre(request: HttpRequest, slug: str):
-    genre = get_object_or_404(Genre, slug=slug)
+class AddGenreView(CreateView):
+    model = Genre
+    form_class = AddGenreForm
+    template_name = 'genres/genre_form.html'
+    success_url = reverse_lazy('genres_list')
 
-    form = EditGenreForm(request.POST or None, instance=genre)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'add'
+        context['cancel_url'] = reverse_lazy('genres_list')
+        return context
 
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            return redirect(genre.get_absolute_url())
 
-    return render(request, 'genres/genre_form.html', {
-        'form': form,
-        'action': 'edit',
-        'cancel_url': genre.get_absolute_url(),
-    })
+class EditGenreView(UpdateView):
+    model = Genre
+    form_class = EditGenreForm
+    template_name = 'genres/genre_form.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
 
-def delete_genre(request: HttpRequest, slug: str):
-    genre = get_object_or_404(Genre, slug=slug)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'edit'
+        context['cancel_url'] = self.object.get_absolute_url()
+        return context
 
-    form = DeleteGenreForm(request.POST or None, instance=genre)
+    def get_success_url(self):
+        return self.object.get_absolute_url()
 
-    for field in form.fields.values():
-        field.disabled = True
 
-    if request.method == 'POST':
-        genre.delete()
-        return redirect('genres_list')
+class DeleteGenreView(DeleteView):
+    model = Genre
+    template_name = 'genres/genre_form.html'
+    success_url = reverse_lazy('genres_list')
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
 
-    return render(request, 'genres/genre_form.html', {
-        'form': form,
-        'action': 'delete',
-        'cancel_url': reverse('genres_list'),
-    })
+    def get_form(self, form_class=None):
+        form = DeleteGenreForm(instance=self.object)
+
+        for field in form.fields.values():
+            field.disabled = True
+
+        return form
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.get_form()
+        context['action'] = 'delete'
+        context['cancel_url'] = reverse_lazy('genres_list')
+        return context

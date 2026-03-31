@@ -1,155 +1,160 @@
-from collections import defaultdict
 
-from django.contrib.admin.templatetags.admin_list import search_form
-from django.db.models.functions import Lower
-from django.http import HttpRequest
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.db.models import Avg, Q
-from django.urls import reverse
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, DeleteView, UpdateView, CreateView, DetailView
 
 from games.forms import AddGameForm, EditGameForm, DeleteGameForm, GameSearchForm
 from games.models import Game, Genre, Platform
 
+class GamesListView(TemplateView):
+    template_name = 'games/games_list.html'
 
-def games_list(request: HttpRequest):
-    search_form = GameSearchForm(request.GET or None)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    list_games = Game.objects.annotate(
-        avg_rating=Avg('reviews__rating')
-    ).order_by('name')
+        search_form = GameSearchForm(self.request.GET or None)
 
-    if 'query' in request.GET:
-        if search_form.is_valid():
+        games = Game.objects.annotate(
+            avg_rating=Avg('reviews__rating')
+        ).order_by('name')
+
+        if 'query' in self.request.GET and search_form.is_valid():
             search_value = search_form.cleaned_data['query']
-            list_games = list_games.filter(
-                Q(name__icontains=search_value)
-                    |
+            games = games.filter(
+                Q(name__icontains=search_value) |
                 Q(description__icontains=search_value)
             )
 
-    context = {
-        'games': list_games,
-        'page_title': 'All Games',
-        'search_form': search_form,
-    }
+        context['games'] = games
+        context['page_title'] = 'All Games'
+        context['search_form'] = search_form
 
-    return render(request, 'games/games_list.html', context)
-
-def game_details(request: HttpRequest, game_id: str):
-    game = get_object_or_404(Game, id=game_id)
-
-    avg_rating = game.reviews.aggregate(Avg('rating'))['rating__avg']
-
-    context = {
-        'game': game,
-        'avg_rating': avg_rating,
-    }
-    return render(request, 'games/game_details.html', context)
-
-def games_by_genre(request: HttpRequest, slug: str):
-    genre = get_object_or_404(Genre, slug=slug)
-    search_form = GameSearchForm(request.GET or None)
-
-    games = Game.objects.filter(genres=genre)
-
-    if 'query' in request.GET and search_form.is_valid():
-        search_value = search_form.cleaned_data['query']
-        games = games.filter(
-            Q(name__icontains=search_value) |
-            Q(description__icontains=search_value)
-        )
-
-    context = {
-        'games': games,
-        'page_title': f"Games in {genre.name}",
-        'search_form': search_form,
-        'current_genre': genre,
-        'show_genre_actions': True,
-        'current_platform': None,
-        'show_platform_actions': False,
-    }
-
-    return render(request, 'games/games_list.html', context)
+        return context
 
 
-def games_by_platform(request: HttpRequest, slug: str):
-    platform = get_object_or_404(Platform, slug=slug)
-    search_form = GameSearchForm(request.GET or None)
+class GameDetailsView(DetailView):
+    model = Game
+    template_name = 'games/game_details.html'
+    pk_url_kwarg = 'game_id'
+    context_object_name = 'game'
 
-    games = Game.objects.filter(platforms=platform)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['avg_rating'] = self.object.reviews.aggregate(
+            Avg('rating')
+        )['rating__avg']
+        return context
 
-    if 'query' in request.GET and search_form.is_valid():
-        search_value = search_form.cleaned_data['query']
-        games = games.filter(
-            Q(name__icontains=search_value) |
-            Q(description__icontains=search_value)
-        )
 
-    context = {
-        'games': games,
-        'page_title': f"Games on {platform.name}",
-        'search_form': search_form,
-        'current_platform': platform,
-        'show_platform_actions': True,
-        'current_genre': None,
-        'show_genre_actions': False,
-    }
+class GamesByGenreView(TemplateView):
+    template_name = 'games/games_list.html'
 
-    return render(request, 'games/games_list.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-def add_game(request: HttpRequest):
-    form = AddGameForm(request.POST or None)
+        genre = get_object_or_404(Genre, slug=self.kwargs['slug'])
+        search_form = GameSearchForm(self.request.GET or None)
 
-    genres_count = Genre.objects.count()
-    platforms_count = Platform.objects.count()
+        games = Game.objects.filter(genres=genre)
 
-    if request.method == 'POST' and form.is_valid():
-        game = form.save()
-        return redirect('game_details', game_id=game.id)
+        if 'query' in self.request.GET and search_form.is_valid():
+            search_value = search_form.cleaned_data['query']
+            games = games.filter(
+                Q(name__icontains=search_value) |
+                Q(description__icontains=search_value)
+            )
 
-    context = {
-        'form': form,
-        'action': 'add',
-    }
+        context['games'] = games
+        context['page_title'] = f'Games in {genre.name}'
+        context['search_form'] = search_form
+        context['current_genre'] = genre
+        context['show_genre_actions'] = True
+        context['current_platform'] = None
+        context['show_platform_actions'] = False
 
-    return render(request, 'games/game_form.html', {
-        'form': form,
-        'action': 'add',
-        'cancel_url': reverse('games_list'),
-        'genres_count': genres_count,
-        'platforms_count': platforms_count,
-    })
+        return context
 
-def edit_game(request: HttpRequest, game_id: str):
-    game = get_object_or_404(Game, id=game_id)
 
-    form = EditGameForm(request.POST or None, instance=game)
+class GamesByPlatformView(TemplateView):
+    template_name = 'games/games_list.html'
 
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            return redirect('game_details', game_id=game.id)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    return render(request, 'games/game_form.html', {
-        'form': form,
-        'action': 'edit',
-        'cancel_url': game.get_absolute_url(),
-    })
+        platform = get_object_or_404(Platform, slug=self.kwargs['slug'])
+        search_form = GameSearchForm(self.request.GET or None)
 
-def delete_game(request: HttpRequest, game_id: str):
-    game = get_object_or_404(Game, id=game_id)
+        games = Game.objects.filter(platforms=platform)
 
-    form = DeleteGameForm(request.POST or None, instance=game)
+        if 'query' in self.request.GET and search_form.is_valid():
+            search_value = search_form.cleaned_data['query']
+            games = games.filter(
+                Q(name__icontains=search_value) |
+                Q(description__icontains=search_value)
+            )
 
-    for field in form.fields.values():
-        field.disabled = True
+        context['games'] = games
+        context['page_title'] = f'Games on {platform.name}'
+        context['search_form'] = search_form
+        context['current_platform'] = platform
+        context['show_platform_actions'] = True
+        context['current_genre'] = None
+        context['show_genre_actions'] = False
 
-    if request.method == 'POST':
-        game.delete()
-        return redirect('games_list')
+        return context
 
-    return render(request, 'games/game_form.html', {
-        'form': form,
-        'action': 'delete',
-        'cancel_url': game.get_absolute_url(),
-    })
+
+class AddGameView(CreateView):
+    model = Game
+    form_class = AddGameForm
+    template_name = 'games/game_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'add'
+        context['cancel_url'] = reverse_lazy('games_list')
+        context['genres_count'] = Genre.objects.count()
+        context['platforms_count'] = Platform.objects.count()
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('game_details', kwargs={'game_id': self.object.id})
+
+
+class EditGameView(UpdateView):
+    model = Game
+    form_class = EditGameForm
+    template_name = 'games/game_form.html'
+    pk_url_kwarg = 'game_id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'edit'
+        context['cancel_url'] = self.object.get_absolute_url()
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('game_details', kwargs={'game_id': self.object.id})
+
+
+class DeleteGameView(DeleteView):
+    model = Game
+    template_name = 'games/game_form.html'
+    success_url = reverse_lazy('games_list')
+    pk_url_kwarg = 'game_id'
+
+    def get_form(self, form_class=None):
+        form = DeleteGameForm(instance=self.object)
+
+        for field in form.fields.values():
+            field.disabled = True
+
+        return form
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.get_form()
+        context['action'] = 'delete'
+        context['cancel_url'] = self.object.get_absolute_url()
+        return context

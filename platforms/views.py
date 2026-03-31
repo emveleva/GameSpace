@@ -1,64 +1,67 @@
-from django.http import HttpRequest
-from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DeleteView, UpdateView, TemplateView
 
 from platforms.forms import EditPlatformForm, DeletePlatformForm, AddPlatformForm
 from platforms.models import Platform
 
+class PlatformsListView(TemplateView):
+    template_name = 'platforms/platforms_list.html'
 
-def platforms_list(request: HttpRequest):
-    list_platforms = Platform.objects.all().order_by('name')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    context = {
-        'platforms': list_platforms,
-        'page_title': 'All Platforms'
-    }
+        context['platforms'] = Platform.objects.all().order_by('name')
+        context['page_title'] = 'All Platforms'
 
-    return render(request, 'platforms/platforms_list.html', context)
+        return context
 
-def add_platform(request: HttpRequest):
-    form = AddPlatformForm(request.POST or None)
+class AddPlatformView(CreateView):
+    model = Platform
+    form_class = AddPlatformForm
+    template_name = 'platforms/platform_form.html'
+    success_url = reverse_lazy('platforms_list')
 
-    if request.method == 'POST' and form.is_valid():
-        platform = form.save()
-        return redirect('platforms_list')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'add'
+        context['cancel_url'] = reverse_lazy('platforms_list')
+        return context
 
-    return render(request, 'platforms/platform_form.html', {
-        'form': form,
-        'action': 'add',
-        'cancel_url': reverse('platforms_list'),
-    })
+class EditPlatformView(UpdateView):
+    model = Platform
+    form_class = EditPlatformForm
+    template_name = 'platforms/platform_form.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
 
-def edit_platform(request: HttpRequest, slug: str):
-    platform = get_object_or_404(Platform, slug=slug)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'edit'
+        context['cancel_url'] = self.object.get_absolute_url()
+        return context
 
-    form = EditPlatformForm(request.POST or None, instance=platform)
+    def get_success_url(self):
+        return self.object.get_absolute_url()
 
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            return redirect(platform.get_absolute_url())
 
-    return render(request, 'platforms/platform_form.html', {
-        'form': form,
-        'action': 'edit',
-        'cancel_url': platform.get_absolute_url(),
-    })
+class DeletePlatformView(DeleteView):
+    model = Platform
+    template_name = 'platforms/platform_form.html'
+    success_url = reverse_lazy('platforms_list')
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
 
-def delete_platform(request: HttpRequest, slug: str):
-    platform = get_object_or_404(Platform, slug=slug)
+    def get_form(self, form_class=None):
+        form = DeletePlatformForm(instance=self.object)
 
-    form = DeletePlatformForm(request.POST or None, instance=platform)
+        for field in form.fields.values():
+            field.disabled = True
 
-    for field in form.fields.values():
-        field.disabled = True
+        return form
 
-    if request.method == 'POST':
-        platform.delete()
-        return redirect('platforms_list')
-
-    return render(request, 'platforms/platform_form.html', {
-        'form': form,
-        'action': 'delete',
-        'cancel_url': reverse('platforms_list'),
-    })
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.get_form()
+        context['action'] = 'delete'
+        context['cancel_url'] = reverse_lazy('platforms_list')
+        return context
