@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, DeleteView, UpdateView, CreateView, DetailView
 
+from accounts.models import Profile
 from games.forms import AddGameForm, EditGameForm, DeleteGameForm, GameSearchForm
 from games.models import Game, Genre, Platform
 
@@ -189,13 +190,14 @@ class DeleteGameView(DeleteView):
 class ToggleFavoriteView(LoginRequiredMixin, View):
     def post(self, request, game_id):
         game = get_object_or_404(Game, id=game_id)
-        user = request.user
 
-        if game in user.favorite_games.all():
-            user.favorite_games.remove(game)
+        profile, created = Profile.objects.get_or_create(user=request.user)
+
+        if game in profile.favorite_games.all():
+            profile.favorite_games.remove(game)
             favorited = False
         else:
-            user.favorite_games.add(game)
+            profile.favorite_games.add(game)
             favorited = True
 
         return JsonResponse({

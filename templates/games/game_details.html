@@ -90,4 +90,39 @@
             {% include 'reviews/reviews_list.html' %}
         </div>
     {% endif %}
+
+    <script>
+        document.addEventListener("click", function (e) {
+            if (!e.target.classList.contains("favorite-btn")) return;
+
+            const btn = e.target;
+            const url = btn.dataset.url;
+
+            fetch(url, {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken"),
+                    "X-Requested-With": "XMLHttpRequest",
+                },
+            })
+            .then(r => r.json())
+            .then(data => {
+                btn.textContent = data.favorited ? "❤️" : "🤍";
+            });
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            document.cookie.split(";").forEach(c => {
+                c = c.trim();
+                if (c.startsWith(name + "=")) {
+                    cookieValue = decodeURIComponent(c.substring(name.length + 1));
+                }
+            });
+            return cookieValue;
+        }
+    </script>
 {% endblock %}
+
+

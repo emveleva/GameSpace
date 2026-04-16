@@ -1,11 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 
 from games.models import Game
 from reviews.forms import AddReviewForm, EditReviewForm, DeleteReviewForm
 from reviews.models import Review
 from django.views.generic import CreateView, UpdateView, DeleteView
+
 
 class AddReviewView(CreateView):
     model = Review

@@ -28,6 +28,8 @@ urlpatterns = [
     path('genres/', include('genres.urls')),
     path('platforms/', include('platforms.urls')),
     path('reviews/', include('reviews.urls')),
+    path('api/', include('games.api_urls')),
+    path('api/', include('reviews.api_urls')),
 ]
 
 if settings.DEBUG:
