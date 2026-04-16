@@ -17,15 +17,17 @@
                     {{ review.review }}
                 </p>
 
-                <div class="review-actions">
-                    <a href="{% url 'edit_review' review.id %}" class="btn btn-sm btn-warning">
-                        Edit
-                    </a>
+                {% if user.is_authenticated %}
+                    <div class="review-actions">
+                        <a href="{% url 'edit_review' review.id %}" class="btn btn-sm btn-warning">
+                            Edit
+                        </a>
 
-                    <a href="{% url 'delete_review' review.id %}" class="btn btn-sm btn-danger">
-                        Delete
-                    </a>
-                </div>
+                        <a href="{% url 'delete_review' review.id %}" class="btn btn-sm btn-danger">
+                            Delete
+                        </a>
+                    </div>
+                {% endif %}
             </div>
 
         {% empty %}

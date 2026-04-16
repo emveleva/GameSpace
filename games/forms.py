@@ -6,7 +6,7 @@ from games.models import Game
 class GameFormBasic(forms.ModelForm):
     class Meta:
         model = Game
-        fields = '__all__'
+        exclude = ['created_by']
         labels = {
             'name':'Game Title',
             'description':'Game Description',

@@ -1,5 +1,6 @@
 .image-text-wrapper {
     width: 80%;
+    min-height: calc(100vh - 176px);
     display: flex;
     flex-direction: column;
     justify-content: center;

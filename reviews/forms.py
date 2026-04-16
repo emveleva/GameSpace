@@ -6,10 +6,9 @@ from reviews.models import Review
 class ReviewFormBasic(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['author', 'rating', 'review']
+        fields = ['rating', 'review']
 
         labels = {
-            'author': 'Author',
             'rating': 'Rating (1-5)',
             'review': 'Review',
         }

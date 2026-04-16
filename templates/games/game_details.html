@@ -4,7 +4,19 @@
 {% block content %}
     {% if game %}
         <div class="game-details">
-            <h1 class="game-title">{{ game.name }}</h1>
+            <h1 class="game-title">
+                {{ game.name }}
+
+                {% if user.is_authenticated %}
+                    <button class="favorite-btn" data-url="{% url 'toggle_favorite' game.id %}">
+                        {% if is_favorite %}
+                            ❤️
+                        {% else %}
+                            🤍
+                        {% endif %}
+                    </button>
+                {% endif %}
+            </h1>
 
             <div class="game-details-layout">
                 <div class="game-info">
@@ -58,19 +70,22 @@
                 </div>
             </div>
 
-            <div class="game-actions">
-                <a href="{% url 'add_review' game.id %}" class="btn btn-info">
-                    Add Review
-                </a>
+            {% if user.is_authenticated %}
+                <div class="game-actions">
+                    <a href="{% url 'add_review' game.id %}" class="btn btn-info">
+                        Add Review
+                    </a>
+                    {% if request.user == game.created_by %}
+                    <a href="{% url 'edit_game' game.id %}" class="btn btn-primary">
+                        Edit Game
+                    </a>
 
-                <a href="{% url 'edit_game' game.id %}" class="btn btn-primary">
-                    Edit Game
-                </a>
-
-                <a href="{% url 'delete_game' game.id %}" class="btn btn-danger">
-                    Delete Game
-                </a>
-            </div>
+                    <a href="{% url 'delete_game' game.id %}" class="btn btn-danger">
+                        Delete Game
+                    </a>
+                    {% endif %}
+                </div>
+            {% endif %}
 
             {% include 'reviews/reviews_list.html' %}
         </div>

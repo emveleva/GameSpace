@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, TemplateView
 
@@ -15,11 +17,17 @@ class PlatformsListView(TemplateView):
 
         return context
 
-class AddPlatformView(CreateView):
+class AddPlatformView(LoginRequiredMixin, CreateView):
     model = Platform
     form_class = AddPlatformForm
     template_name = 'platforms/platform_form.html'
     success_url = reverse_lazy('platforms_list')
+    login_url = '/accounts/login/'
+    redirect_field_name = 'next'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,17 +59,9 @@ class DeletePlatformView(DeleteView):
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
 
-    def get_form(self, form_class=None):
-        form = DeletePlatformForm(instance=self.object)
-
-        for field in form.fields.values():
-            field.disabled = True
-
-        return form
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = self.get_form()
         context['action'] = 'delete'
-        context['cancel_url'] = reverse_lazy('platforms_list')
+        context['cancel_url'] = self.success_url
         return context

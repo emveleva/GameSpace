@@ -1,4 +1,6 @@
 @import "base.css";
+@import "accounts.css";
+@import "dashboard.css";
 @import "footer.css";
 @import "game_details.css";
 @import "game_form.css";
@@ -6,5 +8,7 @@
 @import "genres_list.css";
 @import "navigation.css";
 @import "platforms_list.css";
+@import "profile_details.css";
+@import "profile_form.css";
 @import "reviews_list.css";
 @import "welcome.css";

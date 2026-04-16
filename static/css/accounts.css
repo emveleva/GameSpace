@@ -1,0 +1,28 @@
+.form-switch {
+    padding: 0;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+}
+
+.form-switch a {
+    color: #4a6cf7;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.form-switch a:hover {
+    text-decoration: underline;
+}
+
+.field-errors {
+    background-color: #ffe6e6;
+    border: 1px solid #ff4d4d;
+    color: #b30000;
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 14px;
+}

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -11,13 +12,7 @@ class Review(models.Model):
             'blank': 'Review text cannot be empty.',
         }
     )
-    author = models.CharField(
-        max_length=100,
-        error_messages={
-            'blank': 'Author name is required.',
-            'max_length': 'Author name cannot exceed 100 characters.',
-        }
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
 
     rating = models.IntegerField(
         validators=[

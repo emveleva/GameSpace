@@ -1,7 +1,9 @@
-
-from django.shortcuts import get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect
 from django.db.models import Avg, Q
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import TemplateView, DeleteView, UpdateView, CreateView, DetailView
 
 from games.forms import AddGameForm, EditGameForm, DeleteGameForm, GameSearchForm
@@ -41,9 +43,18 @@ class GameDetailsView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         context['avg_rating'] = self.object.reviews.aggregate(
             Avg('rating')
         )['rating__avg']
+
+        if self.request.user.is_authenticated:
+            context['is_favorite'] = self.request.user.profile.favorite_games.filter(
+                id=self.object.id
+            ).exists()
+        else:
+            context['is_favorite'] = False
+
         return context
 
 
@@ -105,10 +116,16 @@ class GamesByPlatformView(TemplateView):
         return context
 
 
-class AddGameView(CreateView):
+class AddGameView(LoginRequiredMixin, CreateView):
     model = Game
     form_class = AddGameForm
     template_name = 'games/game_form.html'
+    login_url = '/accounts/login/'
+    redirect_field_name = 'next'
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -122,16 +139,21 @@ class AddGameView(CreateView):
         return reverse_lazy('game_details', kwargs={'game_id': self.object.id})
 
 
-class EditGameView(UpdateView):
+class EditGameView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Game
     form_class = EditGameForm
     template_name = 'games/game_form.html'
     pk_url_kwarg = 'game_id'
 
+    def test_func(self):
+        return self.get_object().created_by == self.request.user
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'edit'
         context['cancel_url'] = self.object.get_absolute_url()
+        context['genres_count'] = Genre.objects.count()
+        context['platforms_count'] = Platform.objects.count()
         return context
 
     def get_success_url(self):
@@ -156,5 +178,26 @@ class DeleteGameView(DeleteView):
         context = super().get_context_data(**kwargs)
         context['form'] = self.get_form()
         context['action'] = 'delete'
-        context['cancel_url'] = self.object.get_absolute_url()
+        context['cancel_url'] = self.success_url
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return redirect(self.success_url)
+
+class ToggleFavoriteView(LoginRequiredMixin, View):
+    def post(self, request, game_id):
+        game = get_object_or_404(Game, id=game_id)
+        user = request.user
+
+        if game in user.favorite_games.all():
+            user.favorite_games.remove(game)
+            favorited = False
+        else:
+            user.favorite_games.add(game)
+            favorited = True
+
+        return JsonResponse({
+            "favorited": favorited
+        })

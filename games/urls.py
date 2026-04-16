@@ -2,7 +2,7 @@ from django.urls import path
 
 from reviews.views import AddReviewView
 from . import views
-from .views import DeleteGameView, EditGameView, AddGameView, GameDetailsView, GamesListView
+from .views import DeleteGameView, EditGameView, AddGameView, GameDetailsView, GamesListView, ToggleFavoriteView
 
 urlpatterns = [
     path('', GamesListView.as_view(), name='games_list'),
@@ -10,5 +10,6 @@ urlpatterns = [
     path('add_game/', AddGameView.as_view(), name='add_game'),
     path('<int:game_id>/edit/', EditGameView.as_view(), name='edit_game'),
     path('<int:game_id>/delete/', DeleteGameView.as_view(), name='delete_game'),
-    path('<int:game_id>/review/', AddReviewView.as_view(), name='add_review')
+    path('<int:game_id>/review/', AddReviewView.as_view(), name='add_review'),
+    path('<int:game_id>/favorite/', ToggleFavoriteView.as_view(), name="toggle_favorite"),
 ]

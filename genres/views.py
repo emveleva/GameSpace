@@ -1,6 +1,8 @@
 from collections import defaultdict
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.functions import Lower
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
 
@@ -16,7 +18,6 @@ class GenresListView(TemplateView):
         genres = Genre.objects.annotate(
             lower_name=Lower('name')
         ).order_by('lower_name')
-
         grouped_genres = defaultdict(list)
 
         for genre in genres:
@@ -29,11 +30,17 @@ class GenresListView(TemplateView):
         return context
 
 
-class AddGenreView(CreateView):
+class AddGenreView(LoginRequiredMixin, CreateView):
     model = Genre
     form_class = AddGenreForm
     template_name = 'genres/genre_form.html'
     success_url = reverse_lazy('genres_list')
+    login_url = '/accounts/login/'
+    redirect_field_name = 'next'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -66,17 +73,8 @@ class DeleteGenreView(DeleteView):
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
 
-    def get_form(self, form_class=None):
-        form = DeleteGenreForm(instance=self.object)
-
-        for field in form.fields.values():
-            field.disabled = True
-
-        return form
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = self.get_form()
         context['action'] = 'delete'
-        context['cancel_url'] = reverse_lazy('genres_list')
+        context['cancel_url'] = self.success_url
         return context

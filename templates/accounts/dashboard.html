@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-page">
+
+    <div class="dashboard-card dashboard-top">
+
+        <h1 class="welcome-user">Welcome, {{ request.user.username }}!</h1>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <h3>Games Added</h3>
+                <p>{{ games_count }}</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Reviews Written</h3>
+                <p>{{ reviews_count }}</p>
+            </div>
+        </div>
+
+        {% if games_count == 0 and reviews_count == 0 %}
+        <div class="dashboard-empty-hero">
+            <h3>Let’s get you started 🚀</h3>
+            <p>Explore games and start building your profile.</p>
+
+            <a href="{% url 'games_list' %}" class="btn btn-primary">
+                Browse Games
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card">
+
+            <h2>Your Top Rated Games</h2>
+
+            {% if top_rated_user_games %}
+                <ul class="dashboard-list">
+                    {% for game in top_rated_user_games %}
+                        <li>
+                            {{ game.name }}
+                            {% if game.avg_rating %}
+                                — {{ game.avg_rating|floatformat:1 }}/10
+                            {% else %}
+                                — No ratings yet
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="empty-box">
+                    <p>No games yet</p>
+                    <a href="{% url 'add_game' %}" class="btn btn-info">
+                        Add your first game
+                    </a>
+                </div>
+            {% endif %}
+
+        </div>
+
+        <div class="dashboard-card">
+
+            <h2>Recent Reviews on Your Games</h2>
+
+            {% if recent_reviews_on_user_games %}
+                <ul class="dashboard-list">
+                    {% for review in recent_reviews_on_user_games %}
+                        <li>
+                            <strong>{{ review.user.username }}</strong>
+                            → {{ review.game.name }}
+                            ({{ review.rating }}/10)
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="empty-box">
+                    <p>No reviews yet</p>
+                    <span>Share your games to get feedback</span>
+                </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

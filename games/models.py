@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator
 from django.db import models
 from django.db.models import Avg
@@ -34,6 +35,11 @@ class Game(models.Model):
         blank=True,
         null=True,
         help_text='Optional: Provide an image URL for the game.'
+    )
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='games',
     )
 
     def __str__(self):

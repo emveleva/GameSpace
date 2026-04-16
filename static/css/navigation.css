@@ -23,6 +23,7 @@ nav {
 nav section {
       display: flex;
       gap: 40px;
+      align-items: center;
 }
 
 span {

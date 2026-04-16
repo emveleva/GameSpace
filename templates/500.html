@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="image-text-wrapper">
+    <img class="not-found" src="{% static 'images/server-error.png' %}" alt="server-error" />
+    <h1>Something went wrong on the server.</h1>
+    <h2>We’re working to fix it. Please stay calm and try again later.</h2>
+</div>
+{% endblock %}

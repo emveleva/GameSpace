@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="profile-details">
+    <h1 class="profile-username">{{ user.username }}'s Profile</h1>
+
+    <div class="profile-details-layout">
+        <div class="profile-info">
+            <div class="info-row">
+                <span class="info-label">Full Name:</span>
+                <span class="info-value">{{ object.name|default:"Not set" }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Birthday:</span>
+                <span class="info-value">{{ object.birthday|date:"F j, Y"|default:"Not set" }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">City:</span>
+                <span class="info-value">{{ object.city|default:"Not set" }}</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Favorite Games:</span>
+                <span class="info-value">
+                    {% if favorite_games %}
+                        {% for game in favorite_games %}
+                            <a href="{% url 'game_details' game.id %}">{{ game.name }}</a>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        No favorite games added.
+                    {% endif %}
+                </span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Recent Reviews:</span>
+                <span class="info-value">
+                    {% if reviews %}
+                        <ul>
+                        {% for review in reviews %}
+                            <li>
+                                <a href="{% url 'game_details' review.game.id %}">{{ review.game.name }}</a> - "{{ review.review|truncatechars:50 }}"
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        No reviews yet.
+                    {% endif %}
+                </span>
+            </div>
+
+            <div class="profile-actions">
+                <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+                <a href="{% url 'delete_profile' %}" class="btn btn-danger">Delete Profile</a>
+            </div>
+        </div>
+
+        <div class="profile-picture">
+            {% if object.profile_picture %}
+                <img src="{{ object.profile_picture.url }}" alt="{{ user.username }}">
+            {% else %}
+                <img src="{% static 'images/user-picture.png' %}" alt="placeholder">
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
