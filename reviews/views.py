@@ -8,7 +8,7 @@ from reviews.models import Review
 from django.views.generic import CreateView, UpdateView, DeleteView
 
 
-class AddReviewView(CreateView):
+class AddReviewView(LoginRequiredMixin, CreateView):
     model = Review
     form_class = AddReviewForm
     template_name = 'reviews/review_form.html'

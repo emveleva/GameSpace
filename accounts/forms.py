@@ -54,7 +54,7 @@ class ProfileFormBasic(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['name', 'birthday', 'city', 'profile_picture', 'favorite_games']
+        fields = ['name', 'birthday', 'city', 'profile_picture']
         labels = {
             'name': 'Full Name',
             'birthday': 'Birthday',
@@ -75,13 +75,13 @@ class ProfileFormBasic(forms.ModelForm):
         }
         widgets = {
             'birthday': forms.DateInput(attrs={'type': 'date'}),
-            'favorite_games': forms.SelectMultiple(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if self.instance and self.instance.user:
-            self.fields['username'].initial = self.instance.user.username
+        user = getattr(self.instance, "user", None)
+        if user:
+            self.fields['username'].initial = user.username
 
 class AddProfileForm(ProfileFormBasic):
     pass
@@ -91,4 +91,5 @@ class EditProfileForm(ProfileFormBasic):
         super().__init__(*args, **kwargs)
 
 class DeleteProfileForm(DisableFieldsMixin, ProfileFormBasic):
-    pass
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

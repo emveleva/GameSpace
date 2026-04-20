@@ -7,6 +7,7 @@ from django.views import View
 from django.views.generic import TemplateView, DeleteView, UpdateView, CreateView, DetailView
 
 from accounts.models import Profile
+from common.mixins import DisableFieldsMixin
 from games.forms import AddGameForm, EditGameForm, DeleteGameForm, GameSearchForm
 from games.models import Game, Genre, Platform
 
@@ -170,9 +171,6 @@ class DeleteGameView(DeleteView):
     def get_form(self, form_class=None):
         form = DeleteGameForm(instance=self.object)
 
-        for field in form.fields.values():
-            field.disabled = True
-
         return form
 
     def get_context_data(self, **kwargs):
@@ -191,7 +189,7 @@ class ToggleFavoriteView(LoginRequiredMixin, View):
     def post(self, request, game_id):
         game = get_object_or_404(Game, id=game_id)
 
-        profile, created = Profile.objects.get_or_create(user=request.user)
+        profile = Profile.objects.get(user=request.user)
 
         if game in profile.favorite_games.all():
             profile.favorite_games.remove(game)

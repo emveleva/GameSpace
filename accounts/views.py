@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.db.models import Avg, Count
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, TemplateView, DetailView, UpdateView, DeleteView
@@ -117,21 +117,29 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
         context['cancel_url'] = reverse_lazy('profile-details')
         return context
 
-class DeleteProfileView(LoginRequiredMixin, DeleteView):
-    model = User
-    form_class = DeleteProfileForm
-    template_name = 'accounts/profile_details.html'
-    success_url = reverse_lazy('welcome')
 
-    def get_object(self):
-        return self.request.user
+class DeleteProfileView(LoginRequiredMixin, View):
+    template_name = 'accounts/profile_form.html'
+    success_url = reverse_lazy("welcome")
 
-    def delete(self, request, *args, **kwargs):
+    def get_profile(self):
+        return self.request.user.profile
+
+    def get(self, request, *args, **kwargs):
+        profile = self.get_profile()
+
+        form = DeleteProfileForm(instance=profile)
+
+        return render(request, self.template_name, {
+            "form": form,
+            "action": "delete",
+            "cancel_url": reverse_lazy("profile-details"),
+        })
+
+    def post(self, request, *args, **kwargs):
+        user = request.user  # ALWAYS user here
+
         logout(request)
-        return super().delete(request, *args, **kwargs)
+        user.delete()  # cascades profile automatically
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['action'] = 'delete'
-        context['cancel_url'] = reverse_lazy('profile-details')
-        return context
+        return redirect(self.success_url)
