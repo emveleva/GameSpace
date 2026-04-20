@@ -19,7 +19,21 @@
             {% for field in form %}
                 <div class="form-field">
                     {{ field.label_tag }}
-                    {{ field }}
+
+                    {% if field.name == "profile_picture" %}
+                        {% if form.instance.profile_picture %}
+                            <div class="profile-preview-container">
+                                <img id="profile-preview"
+                                     src="{% if form.instance.profile_picture %}{{ form.instance.profile_picture.url }}{% endif %}"
+                                     class="profile-preview">
+                            </div>
+                        {% else %}
+                            <p>No profile picture</p>
+                        {% endif %}
+                        {{ field }}
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
 
                     {% if field.errors %}
                         <div class="field-errors">{{ field.errors|striptags }}</div>
@@ -38,4 +52,15 @@
         </form>
     </div>
 </div>
+
+<script>
+document.getElementById('profile-picture-input').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+
+    if (file) {
+        const preview = document.getElementById('profile-preview');
+        preview.src = URL.createObjectURL(file);
+    }
+});
+</script>
 {% endblock %}

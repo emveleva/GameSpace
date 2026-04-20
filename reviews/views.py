@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 
+from common.mixins import ReviewPermissionMixin
 from games.models import Game
 from reviews.forms import AddReviewForm, EditReviewForm, DeleteReviewForm
 from reviews.models import Review
@@ -32,7 +33,7 @@ class AddReviewView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return self.get_game().get_absolute_url()
 
-class EditReviewView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class EditReviewView(ReviewPermissionMixin, LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Review
     form_class = EditReviewForm
     template_name = 'reviews/review_form.html'
@@ -54,7 +55,7 @@ class EditReviewView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def get_success_url(self):
         return reverse('game_details', kwargs={'game_id': self.object.game.pk})
 
-class DeleteReviewView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class DeleteReviewView(ReviewPermissionMixin, LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Review
     template_name = 'reviews/review_form.html'
 

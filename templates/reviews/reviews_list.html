@@ -7,7 +7,7 @@
             <div class="review-card">
 
                 <div class="review-header">
-                    <strong>{{ review.author }}</strong>
+                    <strong>{{ review.user.username }}</strong>
                     <span class="review-rating">
                         ⭐ {{ review.rating }}/5
                     </span>
@@ -17,7 +17,7 @@
                     {{ review.review }}
                 </p>
 
-                {% if user.is_authenticated %}
+                {% if user.is_authenticated and user == review.user or user.is_staff %}
                     <div class="review-actions">
                         <a href="{% url 'edit_review' review.id %}" class="btn btn-sm btn-warning">
                             Edit

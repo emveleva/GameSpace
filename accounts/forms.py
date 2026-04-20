@@ -75,6 +75,10 @@ class ProfileFormBasic(forms.ModelForm):
         }
         widgets = {
             'birthday': forms.DateInput(attrs={'type': 'date'}),
+            "profile_picture": forms.FileInput(attrs={
+                "id": "profile-picture-input",
+                "class": "form-control"
+            })
         }
 
     def __init__(self, *args, **kwargs):
