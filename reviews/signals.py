@@ -6,7 +6,6 @@ from .tasks import send_review_notification_email
 @receiver(post_save, sender=Review)
 def review_created(sender, instance, created, **kwargs):
     if created:
-        print("🚨 SIGNAL FIRED")
         send_review_notification_email.delay(
             instance.game.id,
             instance.user.username,
