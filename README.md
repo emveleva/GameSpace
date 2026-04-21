@@ -14,12 +14,31 @@ Users can:
 
 ---
 
-## Technologies Used
+## 🧑‍💻 User Roles & Permissions
+
+The application defines two user groups:
+
+### 👤 User
+- Can register and log in  
+- Can create and manage their own reviews  
+- Can view games, genres, and platforms  
+- Can edit their own profile  
+
+### 🛡️ Moderator
+- All User permissions  
+- Can edit and delete **any user’s reviews**  
+- Can moderate content across the platform  
+
+---
+
+## ⚙️ Technologies Used
 
 - Backend: Django 6  
 - Database: PostgreSQL  
 - Frontend: HTML, CSS, Bootstrap 5  
 - Templates: Django Template Language (DTL)  
+- Asynchronous Tasks: Celery + Redis  
+- API: Django REST Framework  
 
 ---
 
@@ -79,6 +98,28 @@ Users can:
   - Name
 - Edit genres  
 - Delete genres with a confirmation modal  
+
+---
+
+## REST API
+
+The application includes RESTful API endpoints:
+
+- `/api/games/` → list of games  
+- `/api/games/<id>/` → game details  
+- `/api/reviews/` → reviews list  
+
+Implemented using Django REST Framework with serializers and permissions.
+
+---
+
+## Asynchronous Processing
+
+Celery is used with Redis for background task processing.
+
+### Features:
+- Sends email notifications when a review is added to a game  
+- Runs tasks asynchronously without blocking the main application  
 
 ---
 
@@ -208,9 +249,3 @@ http://127.0.0.1:8000/
 Sensitive information such as database credentials is stored inside the .env file to ensure security and production readiness.
 
 ---
-
-## Future Improvements
-
-- Add user authentication and permissions  
-- Add pagination for games and reviews  
-- Add REST API support  
