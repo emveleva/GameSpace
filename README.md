@@ -14,7 +14,7 @@ Users can:
 
 ---
 
-## 👤 User Roles & Permissions
+## User Roles & Permissions
 
 The application defines two user groups:
 
@@ -31,7 +31,7 @@ The application defines two user groups:
 
 ---
 
-## ⚙️ Technologies Used
+## Technologies Used
 
 - Backend: Django 6  
 - Database: PostgreSQL  
@@ -42,9 +42,9 @@ The application defines two user groups:
 
 ---
 
-## 🚀 Features
+## Features
 
-### 🎮 Games Management
+### Games Management
 
 Users can:
 
@@ -61,7 +61,7 @@ Users can:
 
 ---
 
-### ⭐ Reviews System
+### Reviews System
 
 Users can:
 
@@ -76,7 +76,7 @@ Users can:
 
 ---
 
-### 🎮 Platforms System
+### Platforms System
 
 Users can:
 
@@ -90,7 +90,7 @@ Users can:
 
 ---
 
-### 🧩 Genres System
+### Genres System
 
 Users can:
 
@@ -103,7 +103,7 @@ Users can:
 
 ---
 
-## 🔌 REST API
+## REST API
 
 The application includes RESTful API endpoints:
 
@@ -115,17 +115,17 @@ Implemented using Django REST Framework with serializers and permissions.
 
 ---
 
-## ⚡ Asynchronous Processing
+## Asynchronous Processing
 
 Celery with Redis is used for background task processing.
 
-### Features:
+Features:
 - Sends email notifications when a review is added to a game  
 - Runs tasks asynchronously without blocking the main application  
 
 ---
 
-## 🛡 Safe Deletion
+## Safe Deletion
 
 - Dedicated delete pages for games  
 - Disabled form fields for preview before deletion  
@@ -134,7 +134,7 @@ Celery with Redis is used for background task processing.
 
 ---
 
-## 📦 Project Setup
+## Project Setup
 
 ### Clone the Repository
 
@@ -163,7 +163,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🗄 Database Setup (PostgreSQL Required)
+## Database Setup (PostgreSQL Required)
 
 This project requires PostgreSQL.
 
@@ -188,8 +188,6 @@ CREATE USER game_user WITH PASSWORD 'your_secure_password';
 ---
 
 ### 3. Grant Permissions
-
-Grant the user access to the database:
 
 GRANT ALL PRIVILEGES ON DATABASE game_space TO game_user;
 
@@ -244,6 +242,6 @@ http://127.0.0.1:8000/
 
 ---
 
-## 🔐 Environment Variables
+## Environment Variables
 
 Sensitive information such as database credentials is stored in the .env file to ensure security and production readiness.
