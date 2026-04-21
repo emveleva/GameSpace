@@ -12,6 +12,8 @@ from games.forms import AddGameForm, EditGameForm, DeleteGameForm, GameSearchFor
 from games.models import Game, Genre, Platform
 from reviews.permissions import can_modify_review
 
+from games.permissions import can_modify_game
+
 
 class GamesListView(TemplateView):
     template_name = 'games/games_list.html'
@@ -158,8 +160,7 @@ class EditGameView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     pk_url_kwarg = 'game_id'
 
     def test_func(self):
-        game = self.get_object()
-        return game.created_by == self.request.user
+        return can_modify_game(self.request.user, self.get_object())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -173,11 +174,14 @@ class EditGameView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return reverse_lazy('game_details', kwargs={'game_id': self.object.id})
 
 
-class DeleteGameView(DeleteView):
+class DeleteGameView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Game
     template_name = 'games/game_form.html'
     success_url = reverse_lazy('games_list')
     pk_url_kwarg = 'game_id'
+
+    def test_func(self):
+        return can_modify_game(self.request.user, self.get_object())
 
     def get_form(self, form_class=None):
         form = DeleteGameForm(instance=self.object)

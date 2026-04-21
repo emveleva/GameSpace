@@ -35,7 +35,7 @@ class AddPlatformView(LoginRequiredMixin, CreateView):
         context['cancel_url'] = reverse_lazy('platforms_list')
         return context
 
-class EditPlatformView(UpdateView):
+class EditPlatformView(LoginRequiredMixin, UpdateView):
     model = Platform
     form_class = EditPlatformForm
     template_name = 'platforms/platform_form.html'
@@ -52,7 +52,7 @@ class EditPlatformView(UpdateView):
         return self.object.get_absolute_url()
 
 
-class DeletePlatformView(DeleteView):
+class DeletePlatformView(LoginRequiredMixin, DeleteView):
     model = Platform
     template_name = 'platforms/platform_form.html'
     success_url = reverse_lazy('platforms_list')
@@ -70,3 +70,8 @@ class DeletePlatformView(DeleteView):
         context['action'] = 'delete'
         context['cancel_url'] = self.success_url
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return redirect(self.success_url)

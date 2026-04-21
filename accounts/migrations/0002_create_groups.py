@@ -59,6 +59,8 @@ def create_groups(apps, schema_editor):
     # -------------------------
     moderators_group_permissions = [
         p for p in [
+            get_perm(apps, 'games', 'change_game'),
+            get_perm(apps, 'games', 'delete_game'),
             get_perm(apps, 'reviews', 'change_review'),
             get_perm(apps, 'reviews', 'delete_review'),
         ] if p is not None

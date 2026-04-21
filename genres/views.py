@@ -49,7 +49,7 @@ class AddGenreView(LoginRequiredMixin, CreateView):
         return context
 
 
-class EditGenreView(UpdateView):
+class EditGenreView(LoginRequiredMixin, UpdateView):
     model = Genre
     form_class = EditGenreForm
     template_name = 'genres/genre_form.html'
@@ -66,7 +66,7 @@ class EditGenreView(UpdateView):
         return self.object.get_absolute_url()
 
 
-class DeleteGenreView(DeleteView):
+class DeleteGenreView(LoginRequiredMixin, DeleteView):
     model = Genre
     template_name = 'genres/genre_form.html'
     success_url = reverse_lazy('genres_list')
@@ -83,3 +83,8 @@ class DeleteGenreView(DeleteView):
         context['action'] = 'delete'
         context['cancel_url'] = self.success_url
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return redirect(self.success_url)
