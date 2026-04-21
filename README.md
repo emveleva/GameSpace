@@ -267,3 +267,19 @@ python manage.py test
 ## Environment Variables
 
 Sensitive information such as database credentials is stored in the .env file to ensure security and production readiness.
+
+## Deployment
+
+The application is deployed on Microsoft Azure.
+
+**Live URL:** https://gamespace-emdah6hkgeaecfc8.switzerlandnorth-01.azurewebsites.net/
+
+## Database
+
+The project uses an Azure-hosted database.  
+Database setup and migrations are handled as part of the deployment process.
+
+## Notes
+
+- The application may take a few seconds to start due to Azure cold start.
+- The first request may be slower while the service initializes.
