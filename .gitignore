@@ -17,7 +17,7 @@ ENV/
 *.py[cod]
 db.sqlite3
 media/
-staticfiles/
+staticfiles/*
 
 # PyCharm
 .idea/
