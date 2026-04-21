@@ -145,7 +145,7 @@ cd GameSpace
 
 ### Create a Virtual Environment
 
-python -m venv venv  
+python -m venv venv OR py -m venv venv
 
 Activate it:
 
@@ -200,7 +200,13 @@ ALTER DATABASE game_space OWNER TO game_user;
 
 ---
 
-### 4. Configure Environment Variables
+### 4. Allow test database creation (required for Django tests)
+
+ALTER USER game_user CREATEDB;
+
+---
+
+### 5. Configure Environment Variables
 
 Create a .env file in the project root (same level as manage.py):
 
@@ -241,6 +247,10 @@ Open in browser:
 http://127.0.0.1:8000/  
 
 ---
+
+### Unit tests
+
+python manage.py test
 
 ## Environment Variables
 
