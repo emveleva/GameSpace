@@ -117,11 +117,23 @@ Implemented using Django REST Framework with serializers and permissions.
 
 ## Asynchronous Processing
 
-Celery with Redis is used for background task processing.
+The application uses Celery to demonstrate asynchronous task processing.
+
+For simplified setup and exam compatibility, Celery is configured to run in eager mode, meaning tasks execute immediately within the request-response cycle instead of requiring a separate worker or Redis server.
+
+Configuration
+CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_IGNORE_RESULT = True
+
+Behavior
+.delay() is used to simulate asynchronous task execution
+Tasks are executed immediately (no background worker required)
+Email notifications are still fully functional
+No Redis installation is required to run the project
 
 Features:
 - Sends email notifications when a review is added to a game  
-- Runs tasks asynchronously without blocking the main application  
+- Runs tasks asynchronously without blocking the main application
 
 ---
 
