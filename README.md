@@ -5,28 +5,28 @@ Game Space is a web application for managing video games and user reviews.
 Users can:
 
 - Add, edit, and delete games  
-- Add, edit, and delete reviews for games
-- Add, edit, and delete genre
-- Add, edit, and delete platforms
+- Add, edit, and delete reviews for games  
+- Add, edit, and delete genres  
+- Add, edit, and delete platforms  
 - Rate games  
 - View game details with platforms and genres  
 - Safely delete games and reviews with confirmation  
 
 ---
 
-## 🧑‍💻 User Roles & Permissions
+## 👤 User Roles & Permissions
 
 The application defines two user groups:
 
-### 👤 User
+### User
 - Can register and log in  
 - Can create and manage their own reviews  
 - Can view games, genres, and platforms  
 - Can edit their own profile  
 
-### 🛡️ Moderator
+### Moderator
 - All User permissions  
-- Can edit and delete **any user’s reviews**  
+- Can edit and delete any user’s reviews  
 - Can moderate content across the platform  
 
 ---
@@ -38,13 +38,13 @@ The application defines two user groups:
 - Frontend: HTML, CSS, Bootstrap 5  
 - Templates: Django Template Language (DTL)  
 - Asynchronous Tasks: Celery + Redis  
-- API: Django REST Framework  
+- API: Django REST Framework (DRF)  
 
 ---
 
-## Features
+## 🚀 Features
 
-### Games Management
+### 🎮 Games Management
 
 Users can:
 
@@ -61,7 +61,7 @@ Users can:
 
 ---
 
-### Reviews System
+### ⭐ Reviews System
 
 Users can:
 
@@ -72,36 +72,38 @@ Users can:
   - Review text  
 
 - Edit reviews  
-- Delete reviews with a confirmation modal  
+- Delete reviews with a confirmation page  
 
 ---
 
-### Platform System
+### 🎮 Platforms System
 
 Users can:
 
-- Add platform
-- Platform include:
-  - Name
-  - Image URL (optional)
-- Edit platforms
-- Delete platforms with a confirmation modal  
+- Add platforms  
+- Platforms include:
+  - Name  
+  - Image URL (optional)  
+
+- Edit platforms  
+- Delete platforms with a confirmation page  
 
 ---
 
-### Genre System
+### 🧩 Genres System
 
 Users can:
 
-- Add genres
+- Add genres  
 - Genres include:
-  - Name
+  - Name  
+
 - Edit genres  
-- Delete genres with a confirmation modal  
+- Delete genres with a confirmation page  
 
 ---
 
-## REST API
+## 🔌 REST API
 
 The application includes RESTful API endpoints:
 
@@ -113,9 +115,9 @@ Implemented using Django REST Framework with serializers and permissions.
 
 ---
 
-## Asynchronous Processing
+## ⚡ Asynchronous Processing
 
-Celery is used with Redis for background task processing.
+Celery with Redis is used for background task processing.
 
 ### Features:
 - Sends email notifications when a review is added to a game  
@@ -123,16 +125,16 @@ Celery is used with Redis for background task processing.
 
 ---
 
-### Safe Deletion
+## 🛡 Safe Deletion
 
-- Dedicated delete page for games  
-- Disabled form fields for preview  
+- Dedicated delete pages for games  
+- Disabled form fields for preview before deletion  
 - Confirmation before permanent deletion  
-- Modal confirmation for review deletion  
+- Review deletion requires confirmation  
 
 ---
 
-## Project Setup
+## 📦 Project Setup
 
 ### Clone the Repository
 
@@ -147,10 +149,10 @@ python -m venv venv
 
 Activate it:
 
-Windows:  
+Windows:
 venv\Scripts\activate  
 
-Mac / Linux:  
+Mac / Linux:
 source venv/bin/activate  
 
 ---
@@ -202,7 +204,7 @@ ALTER DATABASE game_space OWNER TO game_user;
 
 ### 4. Configure Environment Variables
 
-Create a .env file in the project root (same level as manage.py) and add:
+Create a .env file in the project root (same level as manage.py):
 
 DB_NAME=game_space  
 DB_USER=game_user  
@@ -210,7 +212,7 @@ DB_PASSWORD=your_secure_password
 DB_HOST=localhost  
 DB_PORT=5432  
 
-❗ Do NOT commit this file to version control.
+IMPORTANT: Do NOT commit this file to version control.
 
 ---
 
@@ -224,11 +226,9 @@ python manage.py migrate
 
 python manage.py createsuperuser  
 
-Only required if using the Django admin panel.
-
 ---
 
-### Collect Static Files (Required for Production)
+### Collect Static Files (Production Only)
 
 python manage.py collectstatic  
 
@@ -244,8 +244,6 @@ http://127.0.0.1:8000/
 
 ---
 
-## Environment Variables
+## 🔐 Environment Variables
 
-Sensitive information such as database credentials is stored inside the .env file to ensure security and production readiness.
-
----
+Sensitive information such as database credentials is stored in the .env file to ensure security and production readiness.
