@@ -1,6 +1,6 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.views import LoginView
 from django.db.models import Avg, Count
 from django.shortcuts import redirect, render
@@ -25,6 +25,10 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
+
+        users_group = Group.objects.get(name='Users')
+        self.object.groups.add(users_group)
+
         login(self.request, self.object)
         return response
 

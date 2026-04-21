@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
 from django.db.models import Avg, Q
 from django.urls import reverse_lazy
@@ -10,6 +10,8 @@ from accounts.models import Profile
 from common.mixins import DisableFieldsMixin
 from games.forms import AddGameForm, EditGameForm, DeleteGameForm, GameSearchForm
 from games.models import Game, Genre, Platform
+from reviews.permissions import can_modify_review
+
 
 class GamesListView(TemplateView):
     template_name = 'games/games_list.html'
@@ -56,6 +58,14 @@ class GameDetailsView(DetailView):
             ).exists()
         else:
             context['is_favorite'] = False
+
+        user = self.request.user
+        reviews = self.object.reviews.all()
+
+        for review in reviews:
+            review.can_edit = can_modify_review(user, review)
+
+        context['reviews'] = reviews
 
         return context
 
@@ -148,7 +158,8 @@ class EditGameView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     pk_url_kwarg = 'game_id'
 
     def test_func(self):
-        return self.get_object().created_by == self.request.user
+        game = self.get_object()
+        return game.created_by == self.request.user
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -182,6 +193,10 @@ class DeleteGameView(DeleteView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
+
+        if self.object.created_by != request.user:
+            return HttpResponseForbidden()
+
         self.object.delete()
         return redirect(self.success_url)
 

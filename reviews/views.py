@@ -8,6 +8,8 @@ from reviews.forms import AddReviewForm, EditReviewForm, DeleteReviewForm
 from reviews.models import Review
 from django.views.generic import CreateView, UpdateView, DeleteView
 
+from reviews.permissions import can_modify_review
+
 
 class AddReviewView(LoginRequiredMixin, CreateView):
     model = Review
@@ -39,12 +41,7 @@ class EditReviewView(ReviewPermissionMixin, LoginRequiredMixin, UserPassesTestMi
     template_name = 'reviews/review_form.html'
 
     def test_func(self):
-        review = self.get_object()
-
-        is_owner = self.request.user == review.user
-        is_moderator = self.request.user.groups.filter(name='Moderators').exists()
-
-        return is_owner or is_moderator
+        return can_modify_review(self.request.user, self.get_object())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -60,12 +57,7 @@ class DeleteReviewView(ReviewPermissionMixin, LoginRequiredMixin, UserPassesTest
     template_name = 'reviews/review_form.html'
 
     def test_func(self):
-        review = self.get_object()
-
-        is_owner = self.request.user == review.user
-        is_moderator = self.request.user.groups.filter(name='Moderators').exists()
-
-        return is_owner or is_moderator
+        return can_modify_review(self.request.user, self.get_object())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
