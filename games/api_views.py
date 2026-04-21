@@ -1,7 +1,8 @@
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import AllowAny
 
 from games.models import Game
+from games.permissions import IsCreatorOrReadOnly
 from games.serializers import GameSerializer
 
 
@@ -10,8 +11,8 @@ class GameListAPI(ListAPIView):
     serializer_class = GameSerializer
     permission_classes = [AllowAny]
 
-class GameDetailAPI(RetrieveAPIView):
+class GameDetailAPI(RetrieveUpdateAPIView):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsCreatorOrReadOnly]
     lookup_field = 'id'
