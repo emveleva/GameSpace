@@ -75,7 +75,7 @@
                     <a href="{% url 'add_review' game.id %}" class="btn btn-info">
                         Add Review
                     </a>
-                    {% if request.user == game.created_by %}
+                    {% if game.can_edit %}
                     <a href="{% url 'edit_game' game.id %}" class="btn btn-primary">
                         Edit Game
                     </a>

@@ -50,6 +50,8 @@ class GameDetailsView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        game = self.object
+
         context['avg_rating'] = self.object.reviews.aggregate(
             Avg('rating')
         )['rating__avg']
@@ -68,6 +70,8 @@ class GameDetailsView(DetailView):
             review.can_edit = can_modify_review(user, review)
 
         context['reviews'] = reviews
+
+        game.can_edit = can_modify_game(user, game)
 
         return context
 
